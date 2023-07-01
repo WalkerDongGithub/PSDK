@@ -13,7 +13,7 @@ class GetKeyMapperBundle[PHV <: Containers, Key <: Containers](phv: PHV, key: Ke
         out.write(i, phv.read(in(i)))
     }
   }
-
+  crossBar()
 }
 
 

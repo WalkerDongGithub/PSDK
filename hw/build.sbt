@@ -5,7 +5,6 @@ ThisBuild / scalaVersion := "2.12.13"
 lazy val hw = (project in file("."))
   .settings(
     name := "hw",
-    idePackagePrefix := Some("psdk.hw"),
     scalacOptions ++= Seq(
       "-deprecation",
       "-feature",
