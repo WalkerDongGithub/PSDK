@@ -3,12 +3,15 @@ package psdk.hw
 
 
 import chisel3._
+import psdk.hw.phv.{Containers, KeyAndPHVPassModule}
 
-class HashUnitIOBundle(inputLength: Int, outputLength: Int) extends Bundle {
+class HashUnitMapper(inputLength: Int, outputLength: Int) extends Bundle {
   val in = Input(UInt(inputLength.W))
   val out = Output(UInt(outputLength.W))
 }
-abstract class HashUnit(inputLength: Int, outputLength: Int) extends Module {
-  val io = IO(new HashUnitIOBundle(inputLength, outputLength))
+abstract class HashUnit
+(val inputLength: Int, val outputLength: Int, val passCycle: Int)
+  extends Module {
+  val io = IO(new HashUnitMapper(inputLength, outputLength))
 }
 

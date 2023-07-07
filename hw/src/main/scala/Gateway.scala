@@ -3,7 +3,7 @@ package psdk.hw
 import chisel3._
 import chisel3.util._
 import psdk.hw.Gateway.{constType, fieldType, opCodeLength, typeLength}
-import psdk.hw.phv.{Containers, KeyPassModule, PHVPassModule}
+import psdk.hw.phv.{Containers, KeyAndPHVPassModule, KeyPassModule, PHVPassModule}
 
 object Gateway {
   val no = 0.U
@@ -21,18 +21,31 @@ object Gateway {
 
 }
 
-class GatewayInfoBundle(parameterLength: Int) extends Bundle {
+class GatewayInfo(parameterLength: Int) extends Bundle {
   val parameter1 = UInt(parameterLength.W)
   val parameter2 = UInt(parameterLength.W)
   val type1 = UInt(typeLength.W)
   val type2 = UInt(typeLength.W)
   val opCode = UInt(opCodeLength.W)
 }
-class GatewayMapperBundle(num: Int, parameterLength: Int, outputLength: Int) extends Bundle {
-  val gatewayInfos = Input(Vec(num, new GatewayInfoBundle(parameterLength)))
+class GatewayMapper(num: Int, parameterLength: Int, outputLength: Int) extends Bundle {
+  val gatewayInfos = Input(Vec(num, new GatewayInfo(parameterLength)))
   val output = Output(UInt(outputLength.W))
 }
 
+/**
+ * Gateway 需要三种 Container，分别定义 PHV，Key 和 translator
+ *
+ * @param phvGen
+ * @param keyGen
+ * @param translatorGen
+ * @param submoduleNum
+ * @param constMaxLengthSupport
+ * @param outputLength
+ * @tparam PHV
+ * @tparam Key
+ * @tparam Translator
+ */
 abstract class Gateway
 [
   PHV <: Containers,
@@ -44,10 +57,11 @@ abstract class Gateway
    translatorGen: Translator,
    val submoduleNum: Int,
    val constMaxLengthSupport: Int,
-   val outputLength: Int
- ) extends PHVPassModule[PHV] with KeyPassModule[Key] {
+   val outputLength: Int,
+   override val passCycle: Int
+ ) extends KeyAndPHVPassModule[Key, PHV](passCycle) {
 
-  val gatewayMapper = IO(new GatewayMapperBundle(submoduleNum, key.addressLength, outputLength))
+  val gatewayMapper = IO(new GatewayMapper(submoduleNum, key.addressLength, outputLength))
   def decoder(parameter: UInt, typeMark: UInt, outputLength: Int) : UInt = {
     val res = UInt(outputLength.W)
     res := MuxCase(0.U, Array(
@@ -85,6 +99,13 @@ abstract class Gateway
 
   private val translator = Reg(new Translator)
 
-  gatewayMapper.output := translator.read(address)
+  val output = translator.read(address)
+
+  val outputDelay = Reg(Vec(passCycle - 2, UInt(outputLength.W)))
+  outputDelay(0) := output
+  for (i <- 1 until outputDelay.length) {
+    outputDelay(i) := outputDelay(i - 1)
+  }
+  gatewayMapper.output := outputDelay
 
 }
