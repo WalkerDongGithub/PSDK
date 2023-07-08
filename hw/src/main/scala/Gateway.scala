@@ -46,7 +46,7 @@ class GatewayMapper(num: Int, parameterLength: Int, outputLength: Int) extends B
  * @tparam Key
  * @tparam Translator
  */
-abstract class Gateway
+class Gateway
 [
   PHV <: Containers,
   Key <: Containers,

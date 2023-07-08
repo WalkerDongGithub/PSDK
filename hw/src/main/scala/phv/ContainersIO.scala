@@ -16,7 +16,6 @@ class ContainersIOBundle[C <: Containers](c: C) extends Bundle {
     out.from(containers(passCycle - 1))
     this
   }
-
 }
 
 abstract class PHVPassModule[PHV <: Containers]

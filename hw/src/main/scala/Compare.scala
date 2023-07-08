@@ -12,8 +12,8 @@ class CompareMapper[ReadData <: Containers, Key <: Containers]
   val hit = Output(Vec(actionNum, Bool()))
 }
 
-class Compare[Key <: Containers, PHV <: Containers, ReadData <: Containers]
-(val keyGen: Key, val phvGen: PHV, val readDataGen: ReadData, val readNum: Int, val dataLength: Int, val actionNum: Int)
+class Compare[Key <: Containers, PHV <: Containers, ReadDataMethod <: Containers]
+(val keyGen: Key, val phvGen: PHV, val readDataGen: ReadDataMethod, val readNum: Int, val dataLength: Int, val actionNum: Int)
   extends PHVPassModule[PHV](1) {
 
   val compareMapper = IO(new CompareMapper(readDataGen, keyGen, readNum, dataLength, actionNum))

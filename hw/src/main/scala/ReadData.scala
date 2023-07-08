@@ -10,17 +10,19 @@ class MemReaderMapper(val readNum: Int, val addressLength: Int, val dataLength: 
 
 class ReadDataMapper(val readNum: Int, val addressLength: Int, val dataLength: Int) extends Bundle {
   val readAddress = Input(Vec(readNum, UInt(addressLength.W)))
+  val gateway = Input(Vec(readNum, Bool()))
   val readData = Output(Vec(readNum, UInt(dataLength.W)))
 }
 class ReadData[PHV<: Containers, Key<: Containers]
-(val readNum: Int, val addressLength: Int, val dataLength: Int)
+(phvGen: PHV, keyGen: Key, val readNum: Int, val addressLength: Int, val dataLength: Int)
   extends KeyAndPHVPassModule[Key, PHV](1) {
 
   val memReaderMapper = IO(new MemReaderMapper(readNum, addressLength, dataLength))
   val readDataMapper = IO(new ReadDataMapper(readNum, addressLength, dataLength))
 
+  val invalidAddress = (1 << (addressLength - 1)).U
   for (i <- 0 until readNum) {
-    memReaderMapper.readAddress(i) := readDataMapper.readAddress(i)
+    memReaderMapper.readAddress(i) := Mux(readDataMapper.gateway(i), readDataMapper.readAddress(i), invalidAddress)
     readDataMapper.readData(i) := memReaderMapper.readData(i)
   }
 
