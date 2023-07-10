@@ -1,6 +1,6 @@
-package psdk.hw
+package template
+
 import chisel3._
-import chisel3.util._
 import psdk.hw.phv._
 
 
@@ -8,12 +8,13 @@ class GetKeyMapper[PHV <: Containers, Key <: Containers](phv: PHV, key: Key) ext
   val in = Input(Vec(key.containerNum, UInt(phv.addressLength.W)))
   val out = Output(new Key)
 
-  def crossBar(): Unit = {
+  def crossBar(): GetKeyMapper[PHV, Key] = {
     for (i <- 0 until key.containerNum) {
-        out.write(i, phv.read(in(i)))
+      out.write(i, phv.read(in(i)))
     }
+    this
   }
-  crossBar()
+
 }
 
 /**
@@ -30,6 +31,6 @@ class GetKey[PHV<: Containers, Key<: Containers](phvGen: PHV, keyGen: Key) exten
 
   private val key = Reg(new Key)
 
-  val keyOut = IO(new GetKeyMapper(phv, key))
+  val keyOut = IO(new GetKeyMapper(phv, key).crossBar())
 
 }

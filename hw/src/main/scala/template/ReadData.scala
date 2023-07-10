@@ -1,6 +1,6 @@
-package psdk.hw
+package template
+
 import chisel3._
-import chisel3.util._
 import psdk.hw.phv._
 
 class MemReaderMapper(val readNum: Int, val addressLength: Int, val dataLength: Int) extends Bundle {

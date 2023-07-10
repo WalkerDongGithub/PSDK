@@ -1,9 +1,9 @@
-package phv.pisa
+package pisa
 
 import chisel3._
 import chisel3.util._
-import psdk.hw.{Compare, Gateway, GetAddress, GetKey, HashUnit, ReadData}
 import psdk.hw.phv.{Containers, KeyAndPHVPassModule, PHVPassModule}
+import template.{Compare, Gateway, GetAddress, GetKey, HashUnit, ReadData}
 
 
 class MatchMapper[PHV <: Containers](val actionNum : Int, val actionLength: Int) extends Bundle {
@@ -27,7 +27,7 @@ class Match[PHV <: Containers, Key <: Containers, Translator <: Containers, Read
   private val getKey = Module(new GetKey(phvGen, keyGen))
   private val gateway = Module(new Gateway(
     phvGen, keyGen, translatorGen, gatewaySubmoduleNum, constMaxLength, readWayNum, 4))
-  private val hashUnit = Module(new HashUnit(keyGen.totalLength, hashValueLength * hashWayNum, 4))
+  private val hashUnit = Module(new SimpleHashUnit(keyGen.totalLength, hashValueLength * hashWayNum, 4))
   private val getAddress = Module(new GetAddress(hashValueLength * hashWayNum, addressLength, readWayNum))
   private val readData = Module(new ReadData(phvGen, keyGen, readWayNum, addressLength, dataLength))
   private val compare = Module(new Compare(keyGen, phvGen, readDataGen, readWayNum, dataLength, actionNum))

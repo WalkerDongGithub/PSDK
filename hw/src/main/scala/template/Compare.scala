@@ -1,7 +1,7 @@
-package psdk.hw
+package template
+
 import chisel3._
-import chisel3.util._
-import psdk.hw.phv.{Containers, KeyAndPHVPassModule, PHVPassModule}
+import psdk.hw.phv.{Containers, ContainersWithSelector, PHVPassModule}
 
 class CompareMapper[ReadData <: Containers, Key <: Containers]
 (val readDataGen: ReadData, val keyGen: Key, val readNum: Int, val actionLength: Int, val actionNum: Int) extends Bundle {
@@ -12,7 +12,7 @@ class CompareMapper[ReadData <: Containers, Key <: Containers]
   val hit = Output(Vec(actionNum, Bool()))
 }
 
-class Compare[Key <: Containers, PHV <: Containers, ReadDataMethod <: Containers]
+class Compare[Key <: Containers, PHV <: Containers, ReadDataMethod <: ContainersWithSelector]
 (val keyGen: Key, val phvGen: PHV, val readDataGen: ReadDataMethod, val readNum: Int, val dataLength: Int, val actionNum: Int)
   extends PHVPassModule[PHV](1) {
 

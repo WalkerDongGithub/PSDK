@@ -1,9 +1,9 @@
-package psdk.hw
+package template
 
 import chisel3._
 import chisel3.util._
-import psdk.hw.Gateway.{constType, fieldType, opCodeLength, typeLength}
-import psdk.hw.phv.{Containers, KeyAndPHVPassModule, KeyPassModule, PHVPassModule}
+import psdk.hw.phv.{Containers, KeyAndPHVPassModule, SymmetricReadAndWriteContainers}
+import template.Gateway.{constType, fieldType, opCodeLength, typeLength}
 
 object Gateway {
   val no = 0.U
@@ -48,9 +48,9 @@ class GatewayMapper(num: Int, parameterLength: Int, outputLength: Int) extends B
  */
 class Gateway
 [
-  PHV <: Containers,
+  PHV <: SymmetricReadAndWriteContainers,
   Key <: Containers,
-  Translator <: Containers
+  Translator <: SymmetricReadAndWriteContainers
 ](
    phvGen: PHV,
    keyGen: Key,

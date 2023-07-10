@@ -1,9 +1,6 @@
-package psdk.hw
-
-
+package template
 
 import chisel3._
-import psdk.hw.phv.{Containers, KeyAndPHVPassModule}
 
 class HashUnitMapper(inputLength: Int, outputLength: Int) extends Bundle {
   val in = Input(UInt(inputLength.W))

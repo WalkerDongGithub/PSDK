@@ -32,7 +32,7 @@ abstract class KeyAndPHVPassModule
 }
 
 object KeyAndPHVPassModule {
-  def cascadeKey[Key <: Containers, PHV <: Containers, AModule <: KeyAndPHVPassModule[Key, PHV]]
+  def cascadeKey[Key <: Containers, PHV <: SymmetricReadAndWriteContainers, AModule <: KeyAndPHVPassModule[Key, PHV]]
   (modules : Array[AModule]): Unit = {
     for (i <- 1 until modules.length) {
       modules(i).keyIO.in.from(modules(i - 1).keyIO.out)
