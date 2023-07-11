@@ -6,7 +6,7 @@ import hw.simple_pisa.containers.{SimpleDataFromSram, SimpleKey, SimplePHV, Simp
 import hw.template.{Compare, Gateway, GetAddress, GetKey, HashUnit, MatchFactory, ReadData}
 import SimpleMatch._
 import hw.template.containers.{Containers, KeyAndPHVPassModule, PHVPassModule}
-import simple_pisa.containers.{SimpleDataFromSram, SimpleKey, SimplePHV, SimpleTranslator}
+
 
 
 object SimpleMatch {
