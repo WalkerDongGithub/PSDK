@@ -10,14 +10,13 @@ import psdk.hw.phv.{Containers, KeyAndPHVPassModule}
  * @param addressLength
  * @param addressNum
  */
-class GetAddressMapper(hashWidth: Int, addressLength: Int, addressNum: Int) extends Bundle {
-  val hashValue = Input(UInt(hashWidth.W))
+class GetAddressMapper[Key<: Containers](keyGen : Key, addressLength: Int, addressNum: Int) extends Bundle {
+  val key = Input(new Key)
   val address = Output(Vec(addressNum, UInt(addressLength.W)))
 }
-class GetAddress[Key <: Containers, PHV <: Containers]
-(val hashWidth: Int, val addressLength: Int, val addressNum: Int)
-  extends KeyAndPHVPassModule[Key, PHV](2) {
-
-  val addressMapper = IO(new GetAddressMapper(hashWidth, addressLength, addressNum))
+class GetAddress[Key<: Containers]
+(keyGen: Key, val addressLength: Int, val addressNum: Int)
+  extends Module {
+  val addressMapper = IO(new GetAddressMapper(keyGen, addressLength, addressNum))
 
 }

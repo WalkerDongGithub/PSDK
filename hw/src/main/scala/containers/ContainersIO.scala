@@ -3,7 +3,7 @@ package phv
 
 import chisel3._
 import chisel3.util._
-class ContainersIOBundle[C <: Containers](c: C) extends Bundle {
+class ContainersIOBundle[C <: ContainersWithFrom](c: C) extends Bundle {
   val in = Input(c)
   val out = Output(c)
 
@@ -32,7 +32,7 @@ abstract class KeyAndPHVPassModule
 }
 
 object KeyAndPHVPassModule {
-  def cascadeKey[Key <: Containers, PHV <: SymmetricReadAndWriteContainers, AModule <: KeyAndPHVPassModule[Key, PHV]]
+  def cascadeKey[Key <: ContainersWithFrom, PHV <: SymmetricReadAndWriteContainers, AModule <: KeyAndPHVPassModule[Key, PHV]]
   (modules : Array[AModule]): Unit = {
     for (i <- 1 until modules.length) {
       modules(i).keyIO.in.from(modules(i - 1).keyIO.out)
@@ -41,7 +41,7 @@ object KeyAndPHVPassModule {
 }
 
 object PHVPassModule {
-  def cascadePHV[PHV <: Containers, AModule <: PHVPassModule[PHV]]
+  def cascadePHV[PHV <: ContainersWithFrom, AModule <: PHVPassModule[PHV]]
   (modules: Array[AModule]): Unit = {
     for (i <- 1 until modules.length) {
       modules(i).phvIO.in.from(modules(i - 1).phvIO.out)

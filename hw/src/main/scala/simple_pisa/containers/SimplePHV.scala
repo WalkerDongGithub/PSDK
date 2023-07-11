@@ -1,4 +1,4 @@
-package pisa.containers
+package simple_pisa.containers
 
 import chisel3._
 import psdk.hw.phv.{Containers, SymmetricReadAndWriteContainers}
@@ -11,7 +11,7 @@ object SimplePHV {
   val num = 64
   val bit = 32
 }
-class SimplePHV extends Containers with SymmetricReadAndWriteContainers {
+class SimplePHV extends SymmetricReadAndWriteContainers {
 
 
   private val num = SimplePHV.num

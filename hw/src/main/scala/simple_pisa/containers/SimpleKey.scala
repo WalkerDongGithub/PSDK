@@ -1,10 +1,10 @@
-package pisa.containers
+package simple_pisa.containers
 
 import chisel3._
 import chisel3.util._
-import psdk.hw.phv.Containers
+import psdk.hw.phv.{Containers, ContainersWithFixedOutputLength, ContainersWithFrom}
 
-class Key extends Containers {
+class SimpleKey extends ContainersWithFrom with ContainersWithFixedOutputLength {
 
   private val keyContainerNum = 16
   private val keyContainerLength = 32
@@ -42,10 +42,8 @@ class Key extends Containers {
 
 
   override def from(key: Containers): Unit = {
-    require(key.isInstanceOf[Key])
-    for (j <- 0 until keyContainerNum) {
-      this.key32(j) := key.read(j / 4)((j % 4 + 1) * 32, (j % 4) * 32)
-    }
+    require(key.isInstanceOf[SimpleKey])
+    this := key.asInstanceOf[SimpleKey]
   }
 
 }

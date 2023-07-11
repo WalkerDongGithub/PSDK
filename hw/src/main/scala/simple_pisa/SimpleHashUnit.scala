@@ -1,4 +1,4 @@
-package pisa
+package simple_pisa
 
 import chisel3._
 import template.HashUnit

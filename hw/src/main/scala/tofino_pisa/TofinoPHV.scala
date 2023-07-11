@@ -1,4 +1,4 @@
-package pisa.containers
+package tofino_pisa
 
 import chisel3._
 import chisel3.util._
