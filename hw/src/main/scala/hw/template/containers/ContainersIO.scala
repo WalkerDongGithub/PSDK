@@ -1,5 +1,4 @@
-package psdk.hw
-package phv
+package hw.template.containers
 
 import chisel3._
 import chisel3.util._

@@ -1,4 +1,4 @@
-package psdk.hw.phv
+package hw.template.containers
 
 import chisel3._
 import chisel3.util._
@@ -22,6 +22,12 @@ trait Containers extends Bundle {
   def addressLength : Int
   def containerNum : Int
 
+  def info(): Unit = {
+    println(this.className + " totalLength:   " + totalLength)
+    println(this.className + " addressLength: " + addressLength)
+    println(this.className + " containerNum:  " + containerNum)
+  }
+
 }
 
 trait ContainersWithFixedOutputLength extends Containers {
@@ -43,3 +49,4 @@ trait ContainersWithSelector extends Containers {
   def read(address: UInt, select: Int) : UInt
   def write(address: UInt, select: Int, data: UInt) : Unit
 }
+

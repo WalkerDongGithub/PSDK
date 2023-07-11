@@ -1,7 +1,7 @@
-package template
+package hw.template
 
 import chisel3._
-import psdk.hw.phv.{Containers, ContainersWithFixedOutputLength, ContainersWithSelector, KeyAndPHVPassModule, PHVPassModule, SymmetricReadAndWriteContainers}
+import hw.template.containers.{Containers, ContainersWithFixedOutputLength, ContainersWithSelector, KeyAndPHVPassModule, PHVPassModule, SymmetricReadAndWriteContainers}
 
 class MatchMapper[PHV <: Containers](val actionNum : Int, val actionLength: Int) extends Bundle {
   val phvIn = Input(new PHV)
@@ -14,26 +14,23 @@ trait MatchFactory[
   PHV <: SymmetricReadAndWriteContainers,
   Key <: ContainersWithFixedOutputLength,
   Translator <: ContainersWithFixedOutputLength,
-  ReadDataMethod <: ContainersWithSelector
+  DataFromSram <: ContainersWithSelector with ContainersWithFixedOutputLength
 ] extends Module {
   def buildGetKey: GetKey[PHV, Key]
 
   def buildGateway: Gateway[PHV, Key, Translator]
 
-  def buildHashUnit: HashUnit
-
   def buildGetAddress: GetAddress[Key]
 
   def buildReadData: ReadData[PHV, Key]
 
-  def buildCompare: Compare[Key, PHV, ReadDataMethod]
+  def buildCompare: Compare[Key, PHV, DataFromSram]
 
   def wayNum: Int
   def dataLength : Int
 
   private val getKey = buildGetKey
   private val gateway = buildGateway
-  private val hashUnit = buildHashUnit
   private val getAddress = buildGetAddress
   private val readData = buildReadData
   private val compare = buildCompare
@@ -50,7 +47,7 @@ trait MatchFactory[
   PHVPassModule.cascadePHV(Array(getKey, gateway, readData, compare))
   readData.readDataMapper.gateway := gateway.gatewayMapper.output
   readData.readDataMapper.readAddress := getAddress.addressMapper.address
-  compare.compareMapper.readData := readData.readDataMapper.readData
+  compare.compareMapper.dataFromSram := readData.readDataMapper.readData
 
   io.action := compare.compareMapper.action
   io.hit := compare.compareMapper.hit

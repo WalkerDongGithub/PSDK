@@ -1,9 +1,9 @@
-package template
+package hw.template
 
 import chisel3._
 import chisel3.util._
-import psdk.hw.phv.{Containers, ContainersWithFixedOutputLength, KeyAndPHVPassModule, SymmetricReadAndWriteContainers}
-import template.Gateway.{constType, fieldType, opCodeLength, typeLength}
+import Gateway.{constType, fieldType, opCodeLength, typeLength}
+import hw.template.containers.{Containers, ContainersWithFixedOutputLength, KeyAndPHVPassModule, SymmetricReadAndWriteContainers}
 
 object Gateway {
   val no = 0.U

@@ -1,7 +1,7 @@
-package simple_pisa.containers
+package hw.simple_pisa.containers
 
 import chisel3._
-import psdk.hw.phv.{Containers, SymmetricReadAndWriteContainers}
+import hw.template.containers.{Containers, SymmetricReadAndWriteContainers}
 
 /**
  * Simple PHV 就是Tofino PHV除去了 8位和 16位的Container，一方面言简意赅、另一方面使用简单的结构可以简化测试，

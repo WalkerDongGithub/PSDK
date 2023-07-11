@@ -1,4 +1,4 @@
-package template
+package hw.template
 
 import chisel3._
 

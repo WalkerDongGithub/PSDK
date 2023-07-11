@@ -1,8 +1,8 @@
-package simple_pisa.containers
+package hw.simple_pisa.containers
 
 import chisel3._
 import chisel3.util._
-import psdk.hw.phv.{Containers, ContainersWithFixedOutputLength, ContainersWithFrom}
+import hw.template.containers.{Containers, ContainersWithFixedOutputLength, ContainersWithFrom}
 
 class SimpleKey extends ContainersWithFrom with ContainersWithFixedOutputLength {
 

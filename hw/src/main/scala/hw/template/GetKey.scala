@@ -1,7 +1,7 @@
-package template
+package hw.template
 
 import chisel3._
-import psdk.hw.phv._
+import hw.template.containers.{Containers, PHVPassModule}
 
 
 class GetKeyMapper[PHV <: Containers, Key <: Containers](phv: PHV, key: Key) extends Bundle {

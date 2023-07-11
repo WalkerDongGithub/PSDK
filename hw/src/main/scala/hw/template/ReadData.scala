@@ -1,7 +1,7 @@
-package template
+package hw.template
 
 import chisel3._
-import psdk.hw.phv._
+import hw.template.containers.{Containers, KeyAndPHVPassModule}
 
 class MemReaderMapper(val readNum: Int, val addressLength: Int, val dataLength: Int) extends Bundle {
   val readAddress = Output(Vec(readNum, UInt(addressLength.W)))

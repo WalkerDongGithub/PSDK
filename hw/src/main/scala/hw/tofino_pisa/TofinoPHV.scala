@@ -1,8 +1,8 @@
-package tofino_pisa
+package hw.tofino_pisa
 
 import chisel3._
 import chisel3.util._
-import psdk.hw.phv.{ContainersWithSelector, SymmetricReadAndWriteContainers}
+import hw.template.containers.{ContainersWithSelector, SymmetricReadAndWriteContainers}
 
 /**
  * Tofino PHV
